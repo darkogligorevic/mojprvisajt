@@ -33,7 +33,7 @@ class ProjectsController extends Controller
 
     public function update()
     {
-
+      dd(request()->all());
     }
 
     public function destroy()
