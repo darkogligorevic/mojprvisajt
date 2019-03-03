@@ -20,35 +20,39 @@ class ProjectsController extends Controller
       return View('projekti.create');
     }
 
-    public function show()
+    public function show(Projekti $projekti)
     {
-
+      // return $projekti;
+      return View('projekti.show', compact('projekti'));
     }
 
-    public function edit($id)
+    public function edit(Projekti $projekti)
     {
-      $projekat = Projekti::find($id);
-      return view('projekti.edit', compact('projekat'));
+
+      return view('projekti.edit', compact('projekti'));
     }
 
-    public function update()
+    public function update(Projekti $projekti)
     {
-      dd(request()->all());
+      $projekti->update(request(['naziv_projekta', 'opis']));
+
+
+      return redirect('/projekti');
     }
 
-    public function destroy()
+    public function destroy(Projekti $projekti)
     {
-
+      $projekti->delete();
+      return redirect('/projekti');
     }
 
     public function store()
     {
-      $projekat = new Projekti();
-
-      $projekat->naziv_projekta = Request('naslov');
-      $projekat->Opis = Request('opis');
-
-      $projekat->save();
+    $validated = request()->validate([
+        'naziv_projekta' => ['required', 'min:3'],
+        'opis' => ['required', 'min:3']
+      ]);
+      Projekti::create($validated);
 
       return redirect('/projekti');
     }
